@@ -8,10 +8,9 @@ The project is organized as follows:
 
 ```
 jurassic-park-fishwin-website
-├── public
-│   ├── index.html          # Main HTML document for the website
-│   ├── logos               # Directory for logo images
-│   └── images              # Directory for additional images
+├── index.html          # Main HTML document for the website
+├── logos               # Directory for logo images
+├── images              # Directory for additional images
 ├── src
 │   ├── styles
 │   │   └── main.css        # CSS styles for the website

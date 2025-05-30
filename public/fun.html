@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun & Games | Jurassic Park Fishwin</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/subpage.css">
+</head>
+<body>
+    <!-- Standard header for all pages -->
+<header>
+    <nav class="navbar">
+        <div class="logo-title">
+            <img src="logos/jurassic-park-logo.png" alt="Jurassic Park Logo" class="logo">
+            <span class="site-title">Jurassic Park Fishwin</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html#fishwin-profile">Meet Fishwin</a></li>
+            <li class="dropdown">
+                <a href="index.html#gallery" class="dropbtn">Gallery</a>
+                <div class="dropdown-content">
+                    <a href="index.html#fishwin-art">Fishwin Art</a>
+                    <a href="index.html#park-scenes">Park Scenes</a>
+                    <a href="fun.html">Fun & Games</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">More</a>
+                <div class="dropdown-content">
+                    <a href="team.html">The Team</a>
+                    <a href="history.html">History</a>
+                    <a href="secrets.html">Secrets</a>
+                </div>
+            </li>
+            <li><a href="index.html#about">About</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+        <section>
+            <h2>Fun & Games</h2>
+            <div class="game-card" id="game1">
+                <h3>1. Dino Quiz</h3>
+                <p>What year did the original Jurassic Park movie release?</p>
+                <input type="text" id="quiz-answer" placeholder="Enter year">
+                <button onclick="checkQuiz()">Check</button>
+                <span id="quiz-result"></span>
+            </div>
+            <div class="game-card" id="game2">
+                <h3>2. Fishwin's Memory</h3>
+                <button onclick="startMemory()">Start</button>
+                <div id="memory-board" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 1rem;"></div>
+            </div>
+            <div class="game-card" id="game3">
+                <h3>3. Dino Clicker</h3>
+                <p>Click the dino as many times as you can in 10 seconds!</p>
+                <button id="dino-btn" onclick="startClicker()">Start</button>
+                <div id="clicker-area" style="margin-top:1rem;"></div>
+            </div>
+            <div class="game-card" id="game4">
+                <h3>4. Fishwin's Number Guess</h3>
+                <p>Guess the number between 1 and 20!</p>
+                <label for="guess-input" style="display:none;">Enter your guess</label>
+                <input type="number" id="guess-input" min="1" max="20" title="Enter a number between 1 and 20" placeholder="Your guess">
+                <button onclick="checkGuess()">Guess</button>
+                <span id="guess-result"></span>
+            </div>
+            <div class="game-card" id="game5">
+                <h3>5. Jurassic Hangman</h3>
+                <button onclick="startHangman()">Start</button>
+                <div id="hangman-area"></div>
+            </div>
+            <div class="game-card" id="game6">
+                <h3>6. Bubble Shooter (Mini)</h3>
+                <!-- Wrap canvas and overlay in a container -->
+<div style="position:relative;width:320px;margin:auto;">
+    <canvas id="bubble-canvas" width="320" height="400" style="background:#222;display:block;margin:auto;border-radius:10px;"></canvas>
+    <div id="bubble-overlay" style="display:none;position:absolute;left:0;top:0;width:320px;height:400px;z-index:2;pointer-events:none;text-align:center;line-height:400px;font-size:2rem;color:#fff;font-weight:bold;text-shadow:2px 2px 8px #000;"></div>
+</div>
+                <div style="text-align:center;">
+                    <button onclick="startBubbleShooter()">Restart</button>
+                    <span id="bubble-score"></span>
+                </div>
+                <div style="font-size:0.9rem;text-align:center;">Click to shoot! Match 3+ colors to pop bubbles.</div>
+            </div>
+            <div class="game-card" id="game7">
+                <h3>7. Dino Word Scramble</h3>
+                <div id="scramble-word" style="font-size:1.5rem;margin-bottom:0.5rem;"></div>
+                <input type="text" id="scramble-input" placeholder="Unscramble!">
+                <button onclick="checkScramble()">Guess</button>
+                <span id="scramble-result"></span>
+                <button onclick="newScramble()" style="margin-left:1rem;">New Word</button>
+            </div>
+            <div class="game-card" id="game8">
+                <h3>8. Quick Math</h3>
+                <div id="math-question" style="font-size:1.2rem;margin-bottom:0.5rem;"></div>
+                <input type="number" id="math-input" placeholder="Answer">
+                <button onclick="checkMath()">Check</button>
+                <span id="math-result"></span>
+                <button onclick="newMath()" style="margin-left:1rem;">Next</button>
+            </div>
+        </section>
+        <script>
+        // Dino Quiz
+        function checkQuiz() {
+            const answer = document.getElementById('quiz-answer').value.trim();
+            document.getElementById('quiz-result').textContent =
+                answer === "1993" ? "Correct! 🦖" : "Try again!";
+        }
+
+        // Fishwin's Memory (now with 16 cards, 8 pairs, emojis centered)
+        let memoryFlipped = [], memoryValues = [], memoryTiles = [], memoryLock = false, memoryMatches = 0;
+        function startMemory() {
+            const board = document.getElementById('memory-board');
+            board.innerHTML = '';
+            memoryFlipped = []; memoryValues = []; memoryTiles = []; memoryLock = false; memoryMatches = 0;
+            // 8 pairs (16 cards)
+            let values = [
+                '🐟','🦖','🌴','🦕','🦜','🦋','🦎','🦑',
+                '🐟','🦖','🌴','🦕','🦜','🦋','🦎','🦑'
+            ];
+            values = values.sort(() => 0.5 - Math.random());
+            for(let i=0;i<16;i++) {
+                let tile = document.createElement('button');
+                tile.textContent = '?';
+                tile.style.width = "60px";
+                tile.style.height = "60px";
+                tile.style.fontSize = "2rem";
+                tile.style.borderRadius = "8px";
+                tile.style.background = "#333";
+                tile.style.color = "#ffd700";
+                tile.style.boxShadow = "0 2px 8px rgba(0,0,0,0.2)";
+                tile.style.transition = "background 0.2s";
+                tile.style.display = "flex";
+                tile.style.alignItems = "center";
+                tile.style.justifyContent = "center";
+                tile.style.textAlign = "center";
+                tile.onclick = function() { flipMemory(tile, values[i]); };
+                board.appendChild(tile);
+            }
+        }
+        function flipMemory(tile, val) {
+            if(memoryLock || tile.textContent !== '?') return;
+            tile.textContent = val;
+            tile.style.background = "#ffd700";
+            tile.style.color = "#222";
+            memoryFlipped.push(tile); memoryValues.push(val);
+            if(memoryFlipped.length === 2) {
+                memoryLock = true;
+                setTimeout(() => {
+                    if(memoryValues[0] !== memoryValues[1]) {
+                        memoryFlipped[0].textContent = '?';
+                        memoryFlipped[1].textContent = '?';
+                        memoryFlipped[0].style.background = "#333";
+                        memoryFlipped[1].style.background = "#333";
+                        memoryFlipped[0].style.color = "#ffd700";
+                        memoryFlipped[1].style.color = "#ffd700";
+                    } else {
+                        memoryMatches++;
+                        memoryFlipped[0].disabled = true;
+                        memoryFlipped[1].disabled = true;
+                        // Make matched cards green
+                        memoryFlipped[0].style.background = "#3bb143";
+                        memoryFlipped[1].style.background = "#3bb143";
+                        memoryFlipped[0].style.color = "#fff";
+                        memoryFlipped[1].style.color = "#fff";
+                    }
+                    memoryFlipped = []; memoryValues = [];
+                    memoryLock = false;
+                    if (memoryMatches === 8) {
+                        document.getElementById('memory-board').innerHTML += '<div style="width:100%;text-align:center;color:#ffd700;font-weight:bold;margin-top:1rem;">You matched all pairs! 🎉</div>';
+                    }
+                }, 900);
+            }
+        }
+
+        // Dino Clicker
+        let clickCount = 0, clickTimer = null;
+        function startClicker() {
+            clickCount = 0;
+            const area = document.getElementById('clicker-area');
+            area.innerHTML = '<button id="dino-click" style="font-size:2rem;">🦕</button><div id="clicks">0</div>';
+            document.getElementById('dino-click').onclick = function() {
+                clickCount++;
+                document.getElementById('clicks').textContent = clickCount;
+            };
+            setTimeout(() => {
+                document.getElementById('dino-click').disabled = true;
+                area.innerHTML += `<div>Time's up! You clicked ${clickCount} times!</div>`;
+            }, 10000);
+        }
+
+        // Number Guess
+        let secretNum = Math.floor(Math.random()*20)+1;
+        function checkGuess() {
+            const guess = Number(document.getElementById('guess-input').value);
+            if(guess === secretNum) {
+                document.getElementById('guess-result').textContent = "Correct! 🐟";
+                secretNum = Math.floor(Math.random()*20)+1;
+            } else if(guess < secretNum) {
+                document.getElementById('guess-result').textContent = "Too low!";
+            } else {
+                document.getElementById('guess-result').textContent = "Too high!";
+            }
+        }
+
+        // Hangman
+        const hangmanWords = ["dinosaur","fishwin","park","jurassic","floral","shirt","adventure","aquatic","innovation","prehistoric","scenery",
+            "swamp","security","wrangler","creativity","community","prehistoric","exploration","mystery","secrets"];
+        let hangmanWord = "", hangmanDisplay = "", hangmanTries = 6, hangmanGuessed = [];
+        function startHangman() {
+            hangmanWord = hangmanWords[Math.floor(Math.random()*hangmanWords.length)];
+            hangmanDisplay = "_".repeat(hangmanWord.length);
+            hangmanTries = 6;
+            hangmanGuessed = [];
+            renderHangman();
+        }
+        function renderHangman() {
+            const area = document.getElementById('hangman-area');
+            area.innerHTML = `<div style="font-size:2rem;letter-spacing:0.5rem;">${hangmanDisplay.split('').join(' ')}</div>
+            <div>Tries left: ${hangmanTries}</div>
+            <input type="text" id="hangman-input" maxlength="1" style="width:2rem;text-align:center;">
+            <button onclick="guessHangman()">Guess</button>
+            <div>Guessed: ${hangmanGuessed.join(', ')}</div>`;
+        }
+        function guessHangman() {
+            const inp = document.getElementById('hangman-input');
+            const letter = inp.value.toLowerCase();
+            inp.value = '';
+            if(!letter || hangmanGuessed.includes(letter)) return;
+            hangmanGuessed.push(letter);
+            let found = false;
+            let newDisplay = "";
+            for(let i=0;i<hangmanWord.length;i++) {
+                if(hangmanWord[i] === letter) {
+                    newDisplay += letter;
+                    found = true;
+                } else {
+                    newDisplay += hangmanDisplay[i];
+                }
+            }
+            hangmanDisplay = newDisplay;
+            if(!found) hangmanTries--;
+            if(hangmanDisplay === hangmanWord) {
+                document.getElementById('hangman-area').innerHTML = `<div style="font-size:2rem;">${hangmanDisplay.split('').join(' ')}</div><div>Congratulations! 🎉</div>`;
+            } else if(hangmanTries === 0) {
+                document.getElementById('hangman-area').innerHTML = `<div>Game Over! The word was <b>${hangmanWord}</b></div>`;
+            } else {
+                renderHangman();
+            }
+        }
+
+        // --- Bubble Shooter Mini ---
+        const colors = ['#ffd700','#3bb143','#1e90ff','#ff69b4','#ff6347','#fff'];
+        let grid = [], shooter = {}, score = 0, gameOver = false;
+        let ctx = null;
+        let bubbleAnimating = false;
+        let explosions = []; // {x, y, color, frame}
+
+        function startBubbleShooter() {
+            const canvas = document.getElementById('bubble-canvas');
+            ctx = canvas.getContext('2d');
+            grid = [];
+            shooter = {x:160, y:380, color:colors[Math.floor(Math.random()*colors.length)]};
+            score = 0;
+            gameOver = false;
+            bubbleAnimating = false;
+            explosions = [];
+            document.getElementById('bubble-overlay').style.display = "none";
+            // Build grid
+            for(let r=0;r<7;r++) {
+                let row = [];
+                for(let c=0;c<8;c++) {
+                    row.push(r<4 ? colors[Math.floor(Math.random()*colors.length)] : null);
+                }
+                grid.push(row);
+            }
+            draw();
+            document.getElementById('bubble-score').textContent="Score: 0";
+        }
+
+        function draw() {
+            ctx.clearRect(0,0,320,400);
+            // Draw grid
+            for(let r=0;r<7;r++) for(let c=0;c<8;c++) {
+                if(grid[r][c]) {
+                    ctx.beginPath();
+                    ctx.arc(20+c*40,20+r*40,18,0,2*Math.PI);
+                    ctx.fillStyle=grid[r][c];
+                    ctx.fill();
+                    ctx.strokeStyle="#333";ctx.stroke();
+                }
+            }
+            // Draw shooter
+            ctx.beginPath();
+            ctx.arc(shooter.x, shooter.y, 18, 0, 2*Math.PI);
+            ctx.fillStyle=shooter.color;
+            ctx.fill();
+            ctx.strokeStyle="#fff";ctx.stroke();
+
+            // Draw explosions
+            for(const exp of explosions) {
+                for(let i=0;i<8;i++) {
+                    let angle = (i/8)*2*Math.PI;
+                    let len = exp.frame*3;
+                    ctx.beginPath();
+                    ctx.arc(exp.x+Math.cos(angle)*len, exp.y+Math.sin(angle)*len, 6-exp.frame/2, 0, 2*Math.PI);
+                    ctx.fillStyle = exp.color;
+                    ctx.globalAlpha = 1-(exp.frame/10);
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                }
+            }
+        }
+
+        function animateExplosions(callback) {
+            let frames = 0;
+            function anim() {
+                frames++;
+                explosions.forEach(e=>e.frame++);
+                draw();
+                explosions = explosions.filter(e=>e.frame<10);
+                if(explosions.length>0) {
+                    requestAnimationFrame(anim);
+                } else {
+                    if(callback) callback();
+                }
+            }
+            anim();
+        }
+
+        function shootBubble(angle) {
+            if(gameOver || bubbleAnimating) return;
+            bubbleAnimating = true;
+            let x = shooter.x, y = shooter.y;
+            let dx = Math.cos(angle) * 8, dy = Math.sin(angle) * 8;
+            let color = shooter.color;
+
+            function animate() {
+                x += dx; y += dy;
+                if(x < 18) { x = 18; dx = -dx; }
+                if(x > 302) { x = 302; dx = -dx; }
+                let r = Math.floor((y-2)/40), c = Math.floor((x-2)/40);
+
+                // Check for collision or top
+                let collision = false;
+                if (y < 20) {
+                    r = 0;
+                    c = Math.round((x-20)/40);
+                    collision = true;
+                } else if (r >= 0 && r < 7 && c >= 0 && c < 8 && grid[r][c]) {
+                    // Find nearest empty cell around the collision
+                    let minDist = Infinity, bestR = -1, bestC = -1;
+                    for (let dr = -1; dr <= 1; dr++) {
+                        for (let dc = -1; dc <= 1; dc++) {
+                            let nr = r + dr, nc = c + dc;
+                            if (nr >= 0 && nr < 7 && nc >= 0 && nc < 8 && !grid[nr][nc]) {
+                                let cx = 20 + nc * 40, cy = 20 + nr * 40;
+                                let dist = Math.hypot(cx - x, cy - y);
+                                if (dist < minDist) {
+                                    minDist = dist;
+                                    bestR = nr; bestC = nc;
+                                }
+                            }
+                        }
+                    }
+                    if (bestR !== -1 && bestC !== -1) {
+                        r = bestR; c = bestC;
+                    } else {
+                        // fallback: stick to the row above
+                        r = Math.max(0, r-1);
+                    }
+                    collision = true;
+                }
+
+                // Place the bubble if collision detected and cell is empty
+                if (collision && r >= 0 && r < 7 && c >= 0 && c < 8 && !grid[r][c]) {
+                    grid[r][c] = color;
+                    let popped = popBubbles(r, c, color);
+                    if(popped.bubbles.length >= 3) {
+                        score += popped.bubbles.length;
+                        // Add explosion animations for each popped bubble
+                        for(const [rr,cc] of popped.bubbles) {
+                            explosions.push({
+                                x: 20+cc*40,
+                                y: 20+rr*40,
+                                color: popped.color,
+                                frame: 0
+                            });
+                        }
+                        animateExplosions(()=>{
+                            draw();
+                            checkWinLose();
+                            bubbleAnimating = false;
+                        });
+                    } else {
+                        draw();
+                        checkWinLose();
+                        bubbleAnimating = false;
+                    }
+                    shooter.color = colors[Math.floor(Math.random()*colors.length)];
+                    document.getElementById('bubble-score').textContent = "Score: " + score;
+                    return;
+                }
+
+                // Draw everything + moving bubble
+                draw();
+                ctx.beginPath();
+                ctx.arc(x, y, 18, 0, 2 * Math.PI);
+                ctx.fillStyle = color;
+                ctx.fill();
+                ctx.strokeStyle = "#fff";
+                ctx.stroke();
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function popBubbles(r,c,color) {
+            let visited={}, stack=[[r,c]], cluster=[];
+            while(stack.length) {
+                let [rr,cc]=stack.pop(), key=rr+','+cc;
+                if(visited[key]||!grid[rr]||grid[rr][cc]!==color) continue;
+                visited[key]=1; cluster.push([rr,cc]);
+                [[1,0],[-1,0],[0,1],[0,-1]].forEach(([dr,dc])=>{
+                    let nr=rr+dr,nc=cc+dc;
+                    if(nr>=0&&nr<7&&nc>=0&&nc<8) stack.push([nr,nc]);
+                });
+            }
+            if(cluster.length>=3) {
+                cluster.forEach(([rr,cc])=>grid[rr][cc]=null);
+                return {bubbles: cluster, color: color};
+            }
+            return {bubbles: [], color: color};
+        }
+
+        function checkWinLose() {
+            // Lose: if any bubble in bottom row
+            if(grid[6].some(b=>b)) {
+                gameOver = true;
+                document.getElementById('bubble-overlay').style.display = "block";
+                document.getElementById('bubble-overlay').textContent = "Game Over!";
+                return;
+            }
+            // Win: if all bubbles are cleared
+            let anyLeft = false;
+            for(let r=0;r<7;r++) for(let c=0;c<8;c++) if(grid[r][c]) anyLeft = true;
+            if(!anyLeft) {
+                gameOver = true;
+                document.getElementById('bubble-overlay').style.display = "block";
+                document.getElementById('bubble-overlay').textContent = "You Win! 🎉";
+            }
+        }
+
+        document.getElementById('bubble-canvas').onclick = function(e){
+            if(gameOver || bubbleAnimating) return;
+            let rect=this.getBoundingClientRect();
+            let mx=e.clientX-rect.left, my=e.clientY-rect.top;
+            let angle=Math.atan2(my-shooter.y,mx-shooter.x);
+            shootBubble(angle);
+        };
+
+        // Optionally, restart overlay on click
+        document.getElementById('bubble-overlay').onclick = function() {
+            if(gameOver) startBubbleShooter();
+        };
+
+        startBubbleShooter();
+        </script>
+    </main>
+    <footer>
+        <p>&copy; 2025 Jurassic Park Fishwin. All rights reserved.</p>
+    </footer>
+</body>
+</html>

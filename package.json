@@ -1,0 +1,30 @@
+{
+  "name": "jurassic-park-fishwin-website",
+  "version": "1.0.0",
+  "description": "A Jurassic Park-themed website featuring Fishwin, a unique character that is part fish and part force of nature.",
+  "main": "src/scripts/main.js",
+  "scripts": {
+    "start": "live-server public",
+    "build": "webpack --mode production",
+    "test": "jest"
+  },
+  "keywords": [
+    "Jurassic Park",
+    "Fishwin",
+    "website",
+    "character",
+    "floral-patterned shirt"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "live-server": "^1.2.1"
+  },
+  "devDependencies": {
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1",
+    "jest": "^27.4.5"
+  }
+}

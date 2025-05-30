@@ -255,6 +255,29 @@ body {
     font-size: 1.2rem;
 }
 
+.about-list {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+.about-list li {
+    margin: 5px 0;
+    font-size: 1.1em;
+}
+
+/* Style the link */
+.about-link {
+    color: #007BFF; /* Make the link more visible */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.about-link:hover {
+    color: #0056b3; /* Darker shade on hover */
+    text-decoration: underline;
+}
+
 /* Footer */
 footer {
     background: #222;
